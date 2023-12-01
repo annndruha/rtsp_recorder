@@ -1,0 +1,13 @@
+version: '3.8'
+
+
+services:
+  rtsp_recorder:
+    pull_policy: always
+    image: ghcr.io/annndruha/rtsp_recorder:latest
+    container_name: rtsp_recorder
+    restart: always
+    volumes:
+      - ./data:/app/data
+      - ./rtsp_list.txt:/app/rtsp_list.txt
+      - ./delay.txt:/app/delay.txt
