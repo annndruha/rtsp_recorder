@@ -1,7 +1,7 @@
-import os
 import datetime
-import time
 import logging
+import os
+import time
 import traceback
 
 import cv2
