@@ -2,7 +2,10 @@
 
 Docker container for save RTSP frames from multiple sources.
 
-Create some folder for project (in folder):
+
+### Run
+
+* Create some folder for project (in folder). All next steps do in folder.
 
 * Create `delay.txt` file with only one number: delay in seconds between saving frame from same source.
 
@@ -16,3 +19,6 @@ Create some folder for project (in folder):
     ```bash
     docker compose up -d
     ```
+  
+### Why files?
+The script read files with delay and sources list in runtime loop. So, you can add or remove sources and change delay without restarting a container. (Docker volumes used.)
