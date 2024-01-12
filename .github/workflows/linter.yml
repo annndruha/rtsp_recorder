@@ -13,6 +13,6 @@ jobs:
           python-version: 3.11
       - uses: isort/isort-action@master
         with:
-          requirementsFiles: "requirements.txt requirements.dev.txt"
+          requirementsFiles: "requirements.txt"
       - name: Check flake8
         run: python -m flake8 --max-line-length=150 .
