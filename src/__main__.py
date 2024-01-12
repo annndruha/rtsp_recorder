@@ -20,7 +20,7 @@ def get_filename(url_rtsp: str) -> str:
     if not os.path.exists(directory):
         os.makedirs(directory)
     file_name = os.path.join(directory,
-                             datetime.datetime.now().strftime("%Y_%m_%d_%H_%M_%S.png"))
+                             datetime.datetime.now().strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
     return file_name
 
 
@@ -39,16 +39,17 @@ while True:
 
             _, _ = cap.read()  # Skip some init frames
             _, _ = cap.read()
-            _, _ = cap.read()
             ret, frame = cap.read()
 
             if not ret:
                 logging.error(f'{rtsp_url}')
                 continue
 
-            logging.info(f'{rtsp_url}')
+            logging.info(f'{get_filename(rtsp_url)}')
             time.sleep(delay_per_cam)
             cv2.imwrite(get_filename(rtsp_url), frame)
+    except FileNotFoundError:
+        logging.error('Did you forget create `delay.txt` and `rtsp_list.txt`?')
     except Exception as err:
         logging.error(err)
         traceback.print_tb(err.__traceback__)
