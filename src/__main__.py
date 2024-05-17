@@ -11,8 +11,9 @@ logging.basicConfig(
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
+
 def moscow_time():
-    delta = datetime.timedelta(hours = 3)  # MoscowUTC
+    delta = datetime.timedelta(hours=3)  # MoscowUTC
     tzone = datetime.timezone(delta)
     return datetime.datetime.now(tzone)
 
@@ -34,7 +35,7 @@ while True:
             delay = int(f.readline().strip())
         with open('rtsp_list.txt', 'r') as f:
             rtsp_list = [line.strip() for line in f.readlines()]
-            delay_per_cam = int(delay/len(rtsp_list))
+            delay_per_cam = int(delay / len(rtsp_list))
             logging.info(f'Sources count: {len(rtsp_list)}')
             logging.info(f'One camera delay (seconds): {delay}. Per cam delay: {delay_per_cam}')
 
