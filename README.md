@@ -1,20 +1,24 @@
 # rtsp_recorder
 
-Docker container for save RTSP frames from multiple sources in attached volume `data`.
+Docker container for save RTSP .png frames from multiple sources in attached volume `data`.
 
 
 ### Run
 
 #### Clone repo
-```
-git clone https://github.com/annndruha/rtsp_recorder
-cd rtsp_recorder
+```bash
+git clone https://github.com/annndruha/rtsp_recorder && cd rtsp_recorder
 ```
 #### Add configs
 
 * Create `delay.txt` file with only one number: delay in seconds between saving frame from same source.
-
+    ```bash
+    nano delay.txt
+    ```
 * Create `rtsp_list.txt` with sources, one per line:
+    ```bash
+    nano rtsp_list.txt
+    ```
     ```text
     rtsp://username:password@example.com:777/some/additional/url
     rtsp://username:password@example.com:999/some/additional/url
