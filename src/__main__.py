@@ -11,6 +11,11 @@ logging.basicConfig(
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 
+def moscow_time():
+    delta = datetime.timedelta(hours = 3) # MoscowUTC
+    tzone = datetime.timezone(delta)
+    return datetime.datetime.now(tzone)
+
 
 def get_filename(url_rtsp: str) -> str:
     rtsp_folder = url_rtsp.split('@')[1].replace('/', '_').replace(':', '_')
@@ -19,8 +24,7 @@ def get_filename(url_rtsp: str) -> str:
     directory = os.path.join('data', rtsp_folder)
     if not os.path.exists(directory):
         os.makedirs(directory)
-    file_name = os.path.join(directory,
-                             datetime.datetime.now().strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
+    file_name = os.path.join(directory, moscow_time().strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
     return file_name
 
 
