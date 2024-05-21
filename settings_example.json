@@ -1,0 +1,10 @@
+{
+  "rtsp_sources_list": [
+    "rtsp://login:password@source1.com:5554/additional/url",
+    "rtsp://login:password@source2.com:5554/additional/url"
+  ],
+  "time_zone_delta": 3,
+  "delay": 60,
+  "resize_to": [1920, 1080],
+  "skip_frames": 1
+}

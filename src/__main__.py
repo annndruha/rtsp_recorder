@@ -3,6 +3,7 @@ import logging
 import os
 import time
 import traceback
+import json
 
 import cv2
 
@@ -12,51 +13,61 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 
-def moscow_time():
-    delta = datetime.timedelta(hours=3)  # MoscowUTC
-    tzone = datetime.timezone(delta)
-    return datetime.datetime.now(tzone)
+def current_time(time_zone_delta: float):
+    return datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=time_zone_delta)))
 
 
-def get_filename(url_rtsp: str) -> str:
+def get_filename(url_rtsp: str, time_zone_delta: float) -> str:
     rtsp_folder = url_rtsp.split('@')[1].replace('/', '_').replace(':', '_')
     if not os.path.exists('data'):
         os.makedirs('data')
     directory = os.path.join('data', rtsp_folder)
     if not os.path.exists(directory):
         os.makedirs(directory)
-    file_name = os.path.join(directory, moscow_time().strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
+    file_name = os.path.join(directory, current_time(time_zone_delta).strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
     return file_name
 
 
 while True:
     try:
-        with open('delay.txt') as f:
-            delay = int(f.readline().strip())
-        with open('rtsp_list.txt', 'r') as f:
-            rtsp_list = [line.strip() for line in f.readlines()]
-            delay_per_cam = int(delay / len(rtsp_list))
-            logging.info(f'Sources count: {len(rtsp_list)}')
-            logging.info(f'One camera delay (seconds): {delay}. Per cam delay: {delay_per_cam}')
+        with open('settings.json') as f:
+            settings = json.load(f)
+
+        delay = int(settings['delay'])
+        rtsp_list = settings['rtsp_sources_list']
+        time_zone = settings['time_zone_delta']
+        resize_to = tuple(settings['resize_to'])
+        skip_frames = int(settings['skip_frames'])
+        assert len(resize_to) == 2
+        assert len(rtsp_list) > 0
+
+        delay_per_cam = int(delay / len(rtsp_list))
+        logging.info(f'Sources count: {len(rtsp_list)}. Resize to: [{resize_to[0]} {resize_to[1]}]')
+        logging.info(f'One camera delay (seconds): {delay}. Per cam delay: {delay_per_cam}.')
 
         for rtsp_url in rtsp_list:
             cap = cv2.VideoCapture(rtsp_url)
 
-            _, _ = cap.read()  # Skip init frame (may broken)
+            for _ in range(skip_frames):
+                _, _ = cap.read()
+
             ret, frame = cap.read()
 
             if not ret:
                 logging.error(f'{rtsp_url}')
                 continue
 
-            # Resize from 2K to FullHD
-            frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+            frame = cv2.resize(frame, resize_to)
 
-            logging.info(f'{get_filename(rtsp_url)}')
+            filename = get_filename(rtsp_url, time_zone)
+            cv2.imwrite(filename, frame)
+            logging.info(filename)
             time.sleep(delay_per_cam)
-            cv2.imwrite(get_filename(rtsp_url), frame)
+
     except FileNotFoundError:
-        logging.error('Did you forget create `delay.txt` and `rtsp_list.txt`?')
+        logging.error('Did you forget create `settings.json`?')
+        time.sleep(30)
     except Exception as err:
         logging.error(err)
         traceback.print_tb(err.__traceback__)
+        time.sleep(30)
