@@ -9,5 +9,4 @@ services:
     restart: always
     volumes:
       - ./data:/app/data
-      - ./rtsp_list.txt:/app/rtsp_list.txt
-      - ./delay.txt:/app/delay.txt
+      - ./settings.json:/app/settings.json
