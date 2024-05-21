@@ -42,13 +42,15 @@ while True:
         for rtsp_url in rtsp_list:
             cap = cv2.VideoCapture(rtsp_url)
 
-            _, _ = cap.read()  # Skip some init frames
-            _, _ = cap.read()
+            _, _ = cap.read()  # Skip init frame (may broken)
             ret, frame = cap.read()
 
             if not ret:
                 logging.error(f'{rtsp_url}')
                 continue
+
+            # Resize from 2K to FullHD
+            frame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
 
             logging.info(f'{get_filename(rtsp_url)}')
             time.sleep(delay_per_cam)
