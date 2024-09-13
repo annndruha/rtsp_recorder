@@ -1,9 +1,9 @@
-import datetime
-import logging
 import os
 import time
-import traceback
 import json
+import logging
+import datetime
+import traceback
 
 import cv2
 
@@ -19,11 +19,9 @@ def current_time(time_zone_delta: float):
 
 def get_filename(url_rtsp: str, time_zone_delta: float) -> str:
     rtsp_folder = url_rtsp.split('@')[1].replace('/', '_').replace(':', '_')
-    if not os.path.exists('data'):
-        os.makedirs('data')
+    os.makedirs('data', exist_ok=True)
     directory = os.path.join('data', rtsp_folder)
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    os.makedirs(directory, exist_ok=True)
     file_name = os.path.join(directory, current_time(time_zone_delta).strftime("%Y_%m_%d__%H_%M_%S_%f.png"))
     return file_name
 
