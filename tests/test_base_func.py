@@ -1,7 +1,7 @@
 import datetime
 import os
-import unittest
 import shutil
+import unittest
 
 from src.recorder import get_filename, load_settings
 

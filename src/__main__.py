@@ -1,6 +1,6 @@
+import logging
 import time
 import traceback
-import logging
 
 from src.recorder import get_frames_from_all_sources
 
