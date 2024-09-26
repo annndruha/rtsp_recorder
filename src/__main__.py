@@ -14,9 +14,9 @@ if __name__ == "__main__":
         try:
             get_frames_from_all_sources()
         except FileNotFoundError as err:
-            logging.error('Did you forget create `settings.json`?')
+            logging.error('Did you forget create `settings.json`?' + str(err))
             time.sleep(30)
         except Exception as err:
             logging.error(err)
-            traceback.print_tb(err.__traceback__  )
+            traceback.print_tb(err.__traceback__)
             time.sleep(30)

@@ -28,7 +28,7 @@ class FuncTests(unittest.TestCase):
         shutil.copyfile('settings_example.json', 'settings.json')
         delay, rtsp_list, time_zone, resize_to, skip_frames, delay_per_cam = load_settings()
         my_rtsp_list = ["rtsp://login:password@source1.com:5554/additional/url",
-                            "rtsp://login:password@source2.com:5554/additional/url"]
+                        "rtsp://login:password@source2.com:5554/additional/url"]
         my_resize_to = (1920, 1080)
         self.assertTrue(delay == 60)
         self.assertEqual(rtsp_list, my_rtsp_list)
