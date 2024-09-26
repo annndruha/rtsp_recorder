@@ -18,5 +18,5 @@ if __name__ == "__main__":
             time.sleep(30)
         except Exception as err:
             logging.error(err)
-            traceback.print_tb(err.__traceback__)
+            traceback.print_tb(err.__traceback__  )
             time.sleep(30)
