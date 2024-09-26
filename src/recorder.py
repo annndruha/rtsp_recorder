@@ -3,7 +3,7 @@ import json
 import logging
 import os
 import time
-from typing import Tuple, Any
+from typing import Any, Tuple
 
 import cv2
 
