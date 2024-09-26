@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import time
+from typing import Tuple, Any
 
 import cv2
 
@@ -20,14 +21,14 @@ def get_filename(url_rtsp: str, time_zone_delta: float) -> str:
     return file_name
 
 
-def load_settings():
+def load_settings() -> Tuple[int, list[Any], float, Tuple[int, int], int, int]:
     with open('settings.json') as f:
         settings = json.load(f)
 
     delay = int(settings['delay'])
-    rtsp_list = settings['rtsp_sources_list']
-    time_zone = settings['time_zone_delta']
-    resize_to = tuple(settings['resize_to'])
+    rtsp_list = list(settings['rtsp_sources_list'])
+    time_zone = float(settings['time_zone_delta'])
+    resize_to = (int(settings['resize_to'][0]), int(settings['resize_to'][1]))
     skip_frames = int(settings['skip_frames'])
     assert len(resize_to) == 2
     assert len(rtsp_list) > 0
@@ -39,7 +40,7 @@ def load_settings():
     return delay, rtsp_list, time_zone, resize_to, skip_frames, delay_per_cam
 
 
-def get_frames_from_all_sources():
+def get_frames_from_all_sources() -> None:
     delay, rtsp_list, time_zone, resize_to, skip_frames, delay_per_cam = load_settings()
 
     for rtsp_url in rtsp_list:
