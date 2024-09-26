@@ -1,4 +1,4 @@
-name: Build, publish and deploy docker
+name: Lint. Test. Build, publish and deploy docker image
 
 on:
   push:
