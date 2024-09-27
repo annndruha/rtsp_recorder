@@ -46,8 +46,8 @@ def get_frames_from_all_sources() -> None:
     for rtsp_url in rtsp_list:
         cap = cv2.VideoCapture(rtsp_url)
 
-        for _ in range(skip_frames):
-            _, _ = cap.read()
+        for _ in range(skip_frames)    :
+            _, _=cap.read()
 
         ret, frame = cap.read()
 
